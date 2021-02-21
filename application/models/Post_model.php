@@ -1,9 +1,9 @@
 <?php
 
 namespace Model;
+
 use App;
 use CI_Emerald_Model;
-use Comment_model;
 use Exception;
 use stdClass;
 
