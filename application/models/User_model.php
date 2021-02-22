@@ -276,6 +276,18 @@ class User_model extends CI_Emerald_Model {
         return $ret;
     }
 
+    public static function get_user_by_credentials($login, $password)
+    {
+        $data = App::get_ci()
+            ->s
+            ->from(self::CLASS_TABLE)
+            ->where('email', $login)
+            ->where('password', $password)
+            ->one();
+        $ret = (new self())->set($data);
+        return $ret;
+    }
+
 
     /**
      * Getting id from session

@@ -79,18 +79,19 @@ class Main_page extends MY_Controller
         // Todo: 2 nd task Comment
         $post->comment();
 
-        $posts =  Post_model::preparation($post, 'full_info');
+        $posts = Post_model::preparation($post, 'full_info');
         return $this->response_success(['post' => $posts]);
     }
 
 
-    public function login($user_id)
+    public function login()
     {
-        // Right now for tests we use from contriller
-        $login = App::get_ci()->input->post('login');
-        $password = App::get_ci()->input->post('password');
+        // Right now for tests we use from controller
+        $post     = json_decode($this->security->xss_clean($this->input->raw_input_stream));
+        $login    = $post->login;
+        $password = $post->password;
 
-        if (empty($login) || empty($password)){
+        if (empty($login) || empty($password)) {
             return $this->response_error(CI_Core::RESPONSE_GENERIC_WRONG_PARAMS);
         }
 
@@ -98,10 +99,11 @@ class Main_page extends MY_Controller
 
 
         //Todo: 1 st task - Authorisation.
+        $user = User_model::get_user_by_credentials($login, $password);
 
-        Login_model::start_session($user_id);
+        Login_model::start_session($user);
 
-        return $this->response_success(['user' => $user_id]);
+        return $this->response_success(['user' => $user]);
     }
 
 
